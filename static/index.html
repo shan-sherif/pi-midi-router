@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Pi MIDI Router</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="panel-head">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <circle cx="9" cy="14" r="2"/><circle cx="23" cy="14" r="2"/>
+      <circle cx="11.5" cy="20.5" r="2"/><circle cx="20.5" cy="20.5" r="2"/><circle cx="16" cy="22.5" r="2"/>
+    </svg>
+    <div>
+      <h1>Pi MIDI Router</h1>
+      <p class="host"><span id="host">Connecting…</span><button type="button" class="power" id="power" hidden></button></p>
+    </div>
+  </div>
+  <div class="head-actions">
+    <span class="link-state" id="link-state" role="status"></span>
+    <button class="btn btn-danger btn-panic" id="panic" title="Send All Notes Off to every connected device">Stop all notes</button>
+  </div>
+</header>
+
+<main>
+  <div class="split">
+  <section class="band routes" aria-labelledby="routes-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2 id="routes-title">Routes</h2>
+          <p class="tagline"><i>Each route sends MIDI from one device to another. Changes apply instantly and are saved on the Pi.</i></p>
+        </div>
+        <button class="btn btn-dark btn-add" id="add-route">Add route</button>
+      </div>
+      <div id="route-list" class="route-list"></div>
+    </div>
+  </section>
+
+  <aside class="band band-dark devices" aria-labelledby="devices-title">
+    <div class="side-inner">
+      <h2 id="devices-title">Devices</h2>
+      <p class="tagline side-tagline"><i>Everything plugged into the Pi. Lights blink when MIDI passes through.</i></p>
+      <div class="device-group">
+        <h3>Sending MIDI <span class="sub">inputs</span></h3>
+        <ul id="inputs" class="device-list"></ul>
+      </div>
+      <div class="device-group">
+        <h3>Receiving MIDI <span class="sub">outputs</span></h3>
+        <ul id="outputs" class="device-list"></ul>
+      </div>
+      <div class="device-group glossary">
+        <h3>Message types</h3>
+        <p class="side-note"><i>What each switch on a route lets through. Turn a type off here to hide it and block it on every route.</i></p>
+        <ul id="glossary" class="device-list"></ul>
+      </div>
+    </div>
+  </aside>
+
+  <section class="band monitor" aria-labelledby="monitor-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2 id="monitor-title">Activity</h2>
+          <p class="tagline"><i>Each incoming message and where it was sent.</i></p>
+        </div>
+        <div class="monitor-actions">
+          <button class="btn btn-small btn-outline" id="monitor-pause" aria-pressed="false">Pause</button>
+          <button class="btn btn-small btn-outline" id="monitor-clear">Clear</button>
+        </div>
+      </div>
+      <ol id="monitor-log" class="monitor-log" aria-live="off"></ol>
+    </div>
+  </section>
+  </div>
+</main>
+
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <header class="modal-head">
+      <button type="button" class="btn modal-x" id="modal-x" aria-label="Close">&times;</button>
+      <h2 id="modal-title"></h2>
+    </header>
+    <form class="modal-body" id="modal-form">
+      <p id="modal-text"></p>
+      <input class="field" id="modal-input" type="text" autocomplete="off" aria-labelledby="modal-text" hidden>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" id="modal-cancel">Cancel</button>
+        <button type="submit" class="btn btn-dark" id="modal-ok">OK</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="alert" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

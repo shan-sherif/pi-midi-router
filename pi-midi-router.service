@@ -1,0 +1,30 @@
+[Unit]
+Description=Pi MIDI Router (USB MIDI routing with web dashboard)
+After=network-online.target sound.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi-midi-router
+Group=pi-midi-router
+# audio: MIDI devices; video: lets vcgencmd read the power status
+SupplementaryGroups=audio video
+WorkingDirectory=/opt/pi-midi-router
+Environment=PYTHONUNBUFFERED=1
+Environment=PI_MIDI_ROUTER_PORT=@PORT@
+Environment=PI_MIDI_ROUTER_CONFIG=/var/lib/pi-midi-router/config.json
+ExecStart=@PYTHON@ /opt/pi-midi-router/server.py
+Restart=always
+RestartSec=2
+# Give MIDI a bit of priority over other background work
+Nice=-10
+
+# Hardening: the service can only write its own config folder
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/pi-midi-router
+
+[Install]
+WantedBy=multi-user.target

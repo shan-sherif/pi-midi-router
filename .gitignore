@@ -1,0 +1,8 @@
+# Routes saved when running server.py by hand (installed copies keep theirs in /var/lib)
+data/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
